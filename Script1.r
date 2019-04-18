@@ -5,6 +5,9 @@
 install.packages("RcmdrMisc")
 install.packages("tidyverse")
 install.packages("ForImp")
+install.packages("psych")
+install.packages("pastecs")
+
 
 #********************************************************************************
 #                          SETTING WORKING DIRECTORY
@@ -22,6 +25,9 @@ library("ggpubr")
 library(RcmdrMisc)
 library(haven)
 library(ForImp)
+library(car)
+library(psych)
+library(pastecs)
 
 # OBTAINING DATA
 BD1 <- read_excel("BD1 Test.xlsx", sheet = "Sheet1")
@@ -93,7 +99,12 @@ X<-matrix(c(13,5031,130,1168,12,
 mean<-colMeans(X)                             
 Sx<-cov(X)                                    
 D2<-mahalanobis(X,mean,Sx,inverted = FALSE)   
-D2
-print(D2)                                                 
-pchisq(D2, df=5, lower.tail=FALSE)                        
+#FIND CRITICAL MAHALANOBIS VALUE 
+#1. DF = # of Variables (Significativity)
+pchisq(D2, df=5, lower.tail=FALSE)       
+#2. Find Critical Value with
 qchisq(.99, df=5)     
+
+#NORMAL
+round(stat.desc(X, basic = F, norm = T),
+      digits=3)
